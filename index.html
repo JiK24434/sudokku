@@ -10,19 +10,107 @@
 </head>
 <body>
   <header>
-    <strong>Sodokku</strong>
+    <div class="brand"><span class="logo"></span><strong>Sodokku</strong></div>
     <nav>
       <button id="tab-single" class="tab aktif">Single Player</button>
       <button id="tab-multi" class="tab">Multi Player</button>
     </nav>
+    <div></div>
   </header>
 
-  <main>
-    <h1>Temukan Pola <em>Isi yang kosong.</em></h1>
-    <div id="papan"></div>
-    <p>Kesalahan: <span id="salah">0</span>/3</p>
-<div id="numpad"></div>
+  <main class="layout">
+    <!-- KIRI -->
+    <section class="kiri">
+      <div class="judul-baris">
+        <h1>Temukan Pola <em>Isi yang kosong.</em></h1>
+        <div class="statistik">
+          <div><span class="label">Kesalahan</span><b><span id="salah">0</span> <small>/3</small></b></div>
+          <div class="garis-v"></div>
+          <div><span class="label">Waktu</span><b id="waktu">00:00</b></div>
+          <button id="btn-jeda" class="bulat" aria-label="Jeda">
+            <svg class="ikon-jeda" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg>
+            <svg class="ikon-main" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="papan-wrap">
+        <div id="papan"></div>
+        <div id="overlay-jeda" hidden>Permainan dijeda</div>
+      </div>
+
+      <div class="legenda">
+        <span><i class="kotak merah"></i>Sel terpilih</span>
+        <span><i class="kotak hijau"></i>Area terkait</span>
+      </div>
+    </section>
+
+    <!-- KANAN -->
+    <aside class="kanan">
+      <div class="label">Tingkat kesulitan</div>
+      <div id="level">
+        <button data-level="santai">Santai</button>
+        <button data-level="sedang" class="aktif">Sedang</button>
+        <button data-level="sulit">Sulit</button>
+      </div>
+
+      <div id="numpad"></div>
+
+      <div class="tools">
+        <button id="btn-hapus" class="tool">
+          <svg viewBox="0 0 24 24"><path d="M3 17l9-10 7 7-4 4H8zM9 21h12"/></svg>Hapus
+        </button>
+        <button id="btn-catatan" class="tool">
+          <span class="badge merah" id="badge-catatan">OFF</span>
+          <svg viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19z"/></svg>Catatan
+        </button>
+        <button id="btn-petunjuk" class="tool">
+          <span class="badge gelap" id="sisa-petunjuk">3</span>
+          <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z"/></svg>Petunjuk
+        </button>
+      </div>
+
+      <div class="harian">
+        <div class="label merah-teks">Tantangan harian</div>
+        <b id="streak-teks">Rangkaian 0 hari</b>
+        <div class="pil-baris" id="streak-pil"></div>
+      </div>
+
+      <button id="btn-ulang" class="lebar">Mulai ulang permainan</button>
+      <p class="tip">Tip: gunakan tombol angka 1–9 untuk mengisi lebih cepat. Tekan N untuk catatan.</p>
+    </aside>
   </main>
+
+  <!-- POPUP HASIL -->
+  <div id="modal" class="modal" hidden>
+    <div class="kartu">
+      <div class="confetti"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="trofi">
+        <svg viewBox="0 0 24 24"><path d="M7 4h10v6a5 5 0 0 1-10 0zM7 6H3v2a4 4 0 0 0 4 4M17 6h4v2a4 4 0 0 1-4 4M12 15v4M8 21h8"/></svg>
+      </div>
+      <p class="kicker" id="m-kicker">Teka-teki selesai</p>
+      <h2 id="m-judul">Selamat, <em>kamu menang!</em></h2>
+      <p class="desc" id="m-desc"></p>
+
+      <div class="tiles">
+        <div class="tile utama"><b id="m-waktu">00:00</b><span id="m-rekor">Waktu</span></div>
+        <div class="tile"><b id="m-salah">0/3</b><span>Kesalahan</span></div>
+        <div class="tile"><b id="m-petunjuk">0</b><span>Petunjuk</span></div>
+        <div class="tile"><b id="m-level">Sedang</b><span>Tingkat</span></div>
+      </div>
+
+      <div class="harian" id="m-harian">
+        <div class="label merah-teks">Tantangan harian</div>
+        <b id="m-streak-teks">Rangkaian 1 hari</b>
+        <div class="pil-baris" id="m-streak-pil"></div>
+      </div>
+
+      <div class="tombol-baris">
+        <button id="m-lihat">Lihat papan</button>
+        <button id="m-lagi" class="gelap">Main lagi</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="js/main.js"></script>
 </body>
