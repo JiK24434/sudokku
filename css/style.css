@@ -297,3 +297,41 @@ h1 em { display: block; color: var(--amber); font-weight: 500; }
   .kartu.kecil { padding: 24px 18px; }
   .rw { grid-template-columns: 1fr 84px 1fr; padding: 8px 6px; }
 }
+
+/* ===== Multiplayer di HP: judul di atas, angka dekat papan ===== */
+@media (max-width: 1000px) {
+  /* "buka" kolom kiri & kanan supaya semua isinya bisa disusun ulang */
+  #view-multi { display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; padding-top: 14px; }
+  #view-multi .kiri, #view-multi .kanan { display: contents; }
+  #view-multi .kiri > *, #view-multi .kanan > * { min-width: 0; }
+
+  /* urutan dari atas ke bawah */
+  #view-multi .kanan > .label     { order: 1; }   /* MODE OFFLINE · RONDE */
+  #view-multi .kanan > h1         { order: 2; }   /* Temukan Pola */
+  #view-multi .kanan > .chip      { order: 3; }   /* Tingkat */
+  #view-multi .pemain-baris       { order: 4; margin: 6px 0 0; }
+  #view-multi .papan-wrap         { order: 5; }
+  #view-multi #numpad2            { order: 6; }   /* angka tepat di bawah papan */
+  #view-multi .kanan > .dua-kolom:not(:last-child) { order: 7; } /* Lewati + Petunjuk */
+  #view-multi #mp-giliran         { order: 8; }
+  #view-multi .riwayat            { order: 9; }
+  #view-multi .kanan > .dua-kolom:last-child { order: 10; }      /* Jeda + Akhiri */
+  #view-multi .legenda            { order: 11; }
+
+  /* judul dibikin ringkas, satu paragraf */
+  #view-multi h1 { font-size: 26px; }
+  #view-multi h1 em { display: inline; margin-left: 6px; }
+  #view-multi .chip { padding: 4px 12px; }
+
+  /* tombol angka: satu baris 1-9 */
+  #numpad2 { grid-template-columns: repeat(9, 1fr); }
+  #numpad2 button { height: 52px; font-size: 20px; }
+}
+
+/* header lebih ramping di HP biar papan naik ke atas */
+@media (max-width: 600px) {
+  header { padding: 8px 16px; gap: 6px; }
+  .brand { font-size: 18px; gap: 10px; }
+  .logo { width: 28px; height: 28px; }
+  .tab { height: 40px; width: 140px; font-size: 14px; }
+}
