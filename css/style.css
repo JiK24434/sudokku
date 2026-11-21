@@ -335,3 +335,34 @@ h1 em { display: block; color: var(--amber); font-weight: 500; }
   .logo { width: 28px; height: 28px; }
   .tab { height: 40px; width: 140px; font-size: 14px; }
 }
+
+/* ===== Single player di HP: sama kayak multiplayer ===== */
+@media (max-width: 1000px) {
+  #view-single { display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; padding-top: 14px; }
+  #view-single .kiri, #view-single .kanan { display: contents; }
+  #view-single .kiri > *, #view-single .kanan > * { min-width: 0; }
+
+  /* urutan dari atas ke bawah */
+  #view-single .judul-baris          { order: 1; margin-bottom: 0; }
+  #view-single .papan-wrap           { order: 2; }
+  #view-single #numpad               { order: 3; }   /* angka tepat di bawah papan */
+  #view-single .tools                { order: 4; }   /* Hapus, Catatan, Petunjuk */
+  #view-single .kanan > .label       { order: 5; margin-bottom: -6px; }  /* TINGKAT KESULITAN */
+  #view-single #level                { order: 6; }
+  #view-single .harian               { order: 7; }
+  #view-single #btn-ulang            { order: 8; }
+  #view-single .tip                  { order: 9; }
+  #view-single .legenda              { order: 10; margin-top: 0; }
+
+  /* judul ringkas: satu paragraf, statistik di bawahnya */
+  #view-single h1 { font-size: 26px; }
+  #view-single h1 em { display: inline; margin-left: 6px; }
+  #view-single .statistik { padding-bottom: 0; }
+
+  /* tombol angka: satu baris 1-9 */
+  #view-single #numpad { grid-template-columns: repeat(9, 1fr); }
+  #view-single #numpad button { height: 52px; font-size: 20px; }
+
+  /* Hapus/Catatan/Petunjuk dibikin lebih pendek */
+  #view-single .tool { height: 60px; }
+}
