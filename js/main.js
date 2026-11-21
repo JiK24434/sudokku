@@ -1,4 +1,5 @@
 import { generatePuzzle } from './sudoku.js';
+import { bukaMulti, tutupMulti } from './multi.js';
 
 const MAX_SALAH = 3;
 const JATAH_PETUNJUK = 3;
@@ -9,7 +10,7 @@ const papan = $('papan');
 
 // data game (diisi ulang tiap mulaiGame)
 let puzzle, solution, papanMain, catatan;
-let terpilih, kesalahan, selesai, jeda, modeCatatan, sisaPetunjuk, selSalah;
+let terpilih, kesalahan, selesai, jeda, modeCatatan, sisaPetunjuk, selSalah, belumMulai;
 let detik = 0;
 let timer = null;
 let levelAktif = 'sedang';
@@ -59,7 +60,7 @@ function simpanRekor(level, dtk) {
 }
 
 // ---------- Mulai game ----------
-function mulaiGame(level) {
+function mulaiGame(level, langsung = false) {
   levelAktif = level;
   const hasil = generatePuzzle(level);
   puzzle = hasil.puzzle;
@@ -84,6 +85,10 @@ function mulaiGame(level) {
   papan.classList.remove('dijeda');
   $('overlay-jeda').hidden = true;
   $('modal').hidden = true;
+    belumMulai = !langsung;
+  jeda = belumMulai;
+  papan.classList.toggle('dijeda', belumMulai);
+  $('overlay-mulai').hidden = !belumMulai;
 
   document.querySelectorAll('#level button').forEach(b => {
     b.classList.toggle('aktif', b.dataset.level === level);
@@ -260,7 +265,7 @@ function pakaiPetunjuk() {
 }
 
 function toggleJeda() {
-  if (selesai) return;
+  if (selesai || belumMulai) return;
   jeda = !jeda;
   papan.classList.toggle('dijeda', jeda);
   $('overlay-jeda').hidden = !jeda;
@@ -278,6 +283,7 @@ for (let n = 1; n <= 9; n++) {
 
 // ---------- Keyboard ----------
 document.addEventListener('keydown', e => {
+  if ($('view-single').hidden) return; // lagi di mode multi
   if (e.key >= '1' && e.key <= '9') { isiAngka(Number(e.key)); return; }
   if (e.key === 'n' || e.key === 'N') { toggleCatatan(); return; }
   if (e.key === 'Backspace' || e.key === 'Delete') { hapus(); return; }
@@ -299,6 +305,12 @@ document.addEventListener('keydown', e => {
 });
 
 // ---------- Tombol-tombol ----------
+$('btn-mulai').addEventListener('click', () => {
+  belumMulai = false;
+  jeda = false;
+  papan.classList.remove('dijeda');
+  $('overlay-mulai').hidden = true;
+});
 $('btn-hapus').addEventListener('click', hapus);
 $('btn-catatan').addEventListener('click', toggleCatatan);
 $('btn-petunjuk').addEventListener('click', pakaiPetunjuk);
@@ -306,7 +318,17 @@ $('btn-jeda').addEventListener('click', toggleJeda);
 $('btn-ulang').addEventListener('click', () => mulaiGame(levelAktif));
 $('m-lagi').addEventListener('click', () => mulaiGame(levelAktif));
 $('m-lihat').addEventListener('click', () => { $('modal').hidden = true; });
-$('tab-multi').addEventListener('click', () => alert('Multi Player segera hadir!'));
+function pilihTab(multi) {
+  // kalau lagi main single dan pindah tab, otomatis dijeda
+  if (multi && !selesai && !belumMulai && !jeda) toggleJeda();
+  $('view-single').hidden = multi;
+  $('view-multi').hidden = !multi;
+  $('tab-single').classList.toggle('aktif', !multi);
+  $('tab-multi').classList.toggle('aktif', multi);
+  if (multi) bukaMulti(); else tutupMulti();
+}
+$('tab-single').addEventListener('click', () => pilihTab(false));
+$('tab-multi').addEventListener('click', () => pilihTab(true));
 document.querySelectorAll('#level button').forEach(b => {
   b.addEventListener('click', () => mulaiGame(b.dataset.level));
 });

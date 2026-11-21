@@ -18,7 +18,7 @@
     <div></div>
   </header>
 
-  <main class="layout">
+  <main class="layout" id="view-single">
     <!-- KIRI -->
     <section class="kiri">
       <div class="judul-baris">
@@ -37,6 +37,10 @@
       <div class="papan-wrap">
         <div id="papan"></div>
         <div id="overlay-jeda" hidden>Permainan dijeda</div>
+        <div id="overlay-mulai" hidden>
+          <p>Siap bermain?</p>
+          <button id="btn-mulai">Mulai</button>
+        </div>
       </div>
 
       <div class="legenda">
@@ -112,6 +116,60 @@
     </div>
   </div>
 
+  <!-- ================= MULTI PLAYER ================= -->
+  <main class="layout" id="view-multi" hidden>
+    <section class="kiri">
+      <div class="pemain-baris">
+        <div id="mp-card1"></div>
+        <span class="vs">VS</span>
+        <div id="mp-card2"></div>
+      </div>
+
+      <div class="papan-wrap">
+        <div id="mp-papan"></div>
+        <div id="mp-overlay" class="mp-overlay" hidden></div>
+      </div>
+
+      <div class="legenda">
+        <span><b style="color:var(--p1)">5</b>&nbsp;Angka Pemain 1</span>
+        <span><b style="color:var(--merah)">5</b>&nbsp;Angka Pemain 2</span>
+        <span><i class="kotak" style="background:#1f2a28"></i>Angka awal</span>
+        <span><i class="kotak" style="border:1px dashed #1f2a28"></i>Langkah terakhir</span>
+      </div>
+    </section>
+
+    <aside class="kanan" style="padding-top:20px">
+      <div class="label" style="color:#b07d1f">Mode offline · Ronde <span id="mp-ronde">1</span></div>
+      <h1>Temukan Pola <em>Isi bergantian.</em></h1>
+      <div class="chip">Tingkat <b id="mp-level">Sedang</b></div>
+
+      <div id="mp-giliran" class="giliran g1"></div>
+
+      <div id="numpad2"></div>
+
+      <div class="dua-kolom">
+        <button id="mp-lewati" class="btn2">Lewati giliran<small>tanpa poin</small></button>
+        <button id="mp-petunjuk" class="btn2">Petunjuk<small id="mp-sisa-petunjuk">1 tersisa</small></button>
+      </div>
+
+      <div class="riwayat">
+        <span class="label">Riwayat langkah</span>
+        <div id="mp-riwayat"></div>
+      </div>
+
+      <div class="dua-kolom">
+        <button id="mp-jeda" class="btn2">Jeda</button>
+        <button id="mp-akhiri" class="btn2" style="color:var(--merah)">Akhiri permainan</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Layar serah-terima perangkat -->
+  <div id="mp-serah" class="modal" hidden></div>
+
+  <!-- Layar hasil multiplayer -->
+  <div id="mp-hasil" class="modal" hidden></div>
+  
   <script type="module" src="js/main.js"></script>
 </body>
 </html>
