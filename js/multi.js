@@ -3,7 +3,6 @@ import { generatePuzzle } from './sudoku.js';
 const $ = id => document.getElementById(id);
 const MAX_SALAH = 3;
 const JATAH_PETUNJUK = 1;
-const JATAH_UNDO = 2;
 const NAMA_LEVEL = { santai: 'Santai', sedang: 'Sedang', sulit: 'Sulit' };
 
 const lawan = n => (n === 1 ? 2 : 1);
@@ -22,7 +21,7 @@ function baru(status = 'siap') {
   const { puzzle, solution } = generatePuzzle(pLevel);
   const pemain = () => ({
     points: 0, wrong: 0, correct: 0,
-    time: pMenit * 60, hints: JATAH_PETUNJUK, undos: JATAH_UNDO,
+    time: pMenit * 60, hints: JATAH_PETUNJUK,
   });
   s = {
     puzzle, solution,
@@ -130,28 +129,6 @@ function petunjuk() {
   s.last = { r: t.r, c: t.c };
   catat({ jenis: 'petunjuk', r: t.r, c: t.c, n, poin: 0 });
   selesaiLangkah();
-}
-
-// Undo: dipencet oleh pemain yang BARU jalan, di layar serah-terima
-function batalkan() {
-  if (s.status !== 'serah') return;
-  const prev = lawan(s.turn);
-  const h = s.history[s.history.length - 1];
-  const p = s.players[prev];
-  if (!h || h.jenis !== 'isi' || h.pemain !== prev || p.undos <= 0) return;
-
-  s.board[h.r][h.c] = 0;
-  s.owner[h.r][h.c] = 0;
-  p.points -= 15;          // balikin +10, lalu potong 5
-  p.correct--;
-  p.undos--;
-  s.history.pop();
-  s.history.push({ pemain: prev, jenis: 'batal', poin: -5 });
-  s.turn = prev;
-  s.status = 'main';
-  s.terpilih = { r: h.r, c: h.c };
-  s.last = cariLast();
-  render();
 }
 
 function toggleJeda() {
@@ -322,7 +299,6 @@ function renderSerah() {
   if (m.hidden) return;
   const t = s.turn, prev = lawan(t);
   const h = s.history[s.history.length - 1];
-  const bisaUndo = h && h.jenis === 'isi' && h.pemain === prev && s.players[prev].undos > 0;
   m.innerHTML = `
     <div class="kartu kecil">
       <div class="avatar-besar a${t}">P${t}</div>
@@ -335,7 +311,6 @@ function renderSerah() {
         <div>Sel kosong<b>${s.board.flat().filter(v => v === 0).length}</b></div>
       </div>
       <button id="mp-mulai-giliran" class="btn-p2 ${t === 1 ? 'btn-p1' : ''}">Mulai giliran Pemain ${t}</button>
-      ${bisaUndo ? `<button id="mp-batal" class="btn-teks">Pemain ${prev}: batalkan langkah (−5 poin, sisa ${s.players[prev].undos}x)</button>` : ''}
     </div>`;
 }
 
@@ -425,7 +400,6 @@ function init() {
     const b = e.target.closest('button');
     if (!b) return;
     if (b.id === 'mp-mulai-giliran') { s.status = 'main'; render(); }
-    else if (b.id === 'mp-batal') batalkan();
   });
 
   $('mp-hasil').addEventListener('click', e => {
