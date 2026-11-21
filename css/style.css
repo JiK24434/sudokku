@@ -264,3 +264,36 @@ h1 em { display: block; color: var(--amber); font-weight: 500; }
 .rw span:nth-child(2) { color: var(--abu); text-align: center; }
 .rw span:last-child { font-weight: 700; color: var(--merah); font-size: 18px; text-align: right; }
 .rw.hl { background: #fbf1d9; outline: 1px solid var(--amber); }
+
+/* ===== Perbaikan mobile ===== */
+@media (max-width: 1000px) {
+  html, body { overflow-x: hidden; }
+
+  /* biar kolom boleh mengecil sesuai lebar layar */
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .layout > * { min-width: 0; }
+
+  /* di multi, padding atas panel kanan dibikin inline, jadi perlu !important */
+  .kanan { padding-top: 0 !important; }
+
+  .legenda { flex-wrap: wrap; gap: 8px 16px; }
+}
+
+@media (max-width: 600px) {
+  .pemain-baris { gap: 8px; margin: 12px 0 18px; }
+
+  /* kartu pemain: ditumpuk (nama di atas, jam di bawah) biar muat */
+  .pcard {
+    flex-direction: column; align-items: stretch; text-align: center;
+    min-width: 0; padding: 14px 8px 10px; gap: 6px;
+  }
+  .pcard .avatar { display: none; }
+  .pinfo b { white-space: nowrap; }
+  .pinfo small { font-size: 11px; }
+  .jam { margin-left: 0; font-size: 20px; padding: 6px 8px; }
+
+  h1 { font-size: 30px; }
+  #numpad2 button { height: 54px; }
+  .kartu.kecil { padding: 24px 18px; }
+  .rw { grid-template-columns: 1fr 84px 1fr; padding: 8px 6px; }
+}
